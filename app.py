@@ -253,8 +253,13 @@ def _regras_desatualizadas(origem: Path, destino: Path) -> bool:
 class _SemEstilo:
     """Evita que o ttkbootstrap sobrescreva as cores próprias dos widgets tk."""
 
+    # O ttkbootstrap 1.x injeta o parâmetro autostyle nos widgets tk; a série
+    # 2.x não injeta mais e o Tk recusaria a opção.
+    _AUTOSTYLE = tk.Frame.__init__.__module__.startswith("ttkbootstrap")
+
     def __init__(self, *args, **kwargs):
-        kwargs["autostyle"] = False
+        if self._AUTOSTYLE:
+            kwargs["autostyle"] = False
         super().__init__(*args, **kwargs)
 
 
@@ -1324,12 +1329,14 @@ class AppGNRE:
         if navegador_instalado():
             messagebox.showinfo(
                 "Navegador do portal",
-                "O navegador usado no portal de Goiás já está instalado nesta máquina.",
+                "O navegador usado nos portais estaduais (GO, SP, ES e PR) já está "
+                "instalado nesta máquina.",
             )
             return
         if not messagebox.askyesno(
             "Navegador do portal",
-            "Baixar agora o navegador usado pelas guias de Goiás?\n\n"
+            "Baixar agora o navegador usado pelas guias dos portais estaduais "
+            "(GO, SP, ES e PR)?\n\n"
             "É feito uma única vez por máquina (cerca de 170 MB).",
         ):
             return
@@ -3261,8 +3268,9 @@ class DialogoAjuda(Janela):
         ),
         (
             "i",
-            "SP, ES e PR são emitidos no portal do estado; use o aplicativo de "
-            "transporte para essas UFs.",
+            "SP, ES e PR são emitidos no portal do estado pelo robô do próprio app. "
+            "O navegador do robô fica oculto; se o portal pedir captcha, use "
+            "'Portal: mostrar navegador' e repita a emissão.",
         ),
         ("h", "Homologação e produção"),
         (

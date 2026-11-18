@@ -13,7 +13,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox, ttk
 
-VERSAO = "3.2.8"
+VERSAO = "3.3.0"
 ATALHO = "Emissor GNRE Faturamento"
 PASTA_PROGRAMA = "GNRE Faturamento"
 PASTA_CONFIG = "ConfGNRE-Faturamento"
@@ -61,7 +61,7 @@ cache\\               últimas configurações de UF obtidas do portal
 guias\\               lotes, recibos, resultados e PDFs emitidos
 guias_emitidas.json  índice de guias já emitidas (proteção contra duplicidade)
 xmls\\                XMLs baixados pelo portal Edocs
-portal\\              robô do portal de Goiás (perfil, logs e cópias do robô)
+portal\\              robô dos portais estaduais (perfil, logs e cópias do robô)
 edocs.json           conta do portal Edocs (senha protegida pelo Windows)
 emissor.log          registro de execução
 ui_state.json        tamanho e posição da janela

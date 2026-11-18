@@ -25,6 +25,7 @@ from certificado import carregar_certificado
 import cte_consulta
 import cte_edocs
 import cte_gnre
+import portal_cte
 from cte_gnre import (
     ClienteGNRE,
     ResultadoEmissao,
@@ -44,6 +45,7 @@ class PainelCTe:
         self.app = app
         self.root = app.root
         self.dados_dir = Path(dados_dir)
+        portal_cte.configurar(self.dados_dir)
         self.config: cte_gnre.ConfigGNRE | None = None
 
         self.dados: DadosCTe | None = None
@@ -1049,15 +1051,16 @@ class PainelCTe:
             self.var_uf.set(self.dados.uf_favorecida)
 
         uf_efetiva = (self.dados.uf_favorecida if lido else None) or uf
-        if (uf_efetiva or "").strip().upper() in ("SP", "ES", "PR"):
-            messagebox.showerror(
-                "Portal estadual",
-                f"A UF {uf_efetiva} é emitida pelo portal do estado, e o robô "
-                "desse portal não está disponível neste app.\n\n"
-                "Use o app de transporte para emitir nesta UF.",
-            )
-            return
-        if self.app.certificado is None:
+        via_robo = portal_cte.usa_robo(uf_efetiva)
+        if via_robo:
+            if not messagebox.askyesno(
+                "Emitir no portal do estado",
+                f"A UF {uf_efetiva} emite a guia no portal estadual, fora da GNRE, "
+                "e o débito é real mesmo com o ambiente em homologação.\n\n"
+                "Confirma a emissão?",
+            ):
+                return
+        elif self.app.certificado is None:
             messagebox.showerror(
                 "Erro",
                 "Certificado digital inválido. Carregue o A1 para emitir pela GNRE.",
@@ -1075,7 +1078,7 @@ class PainelCTe:
         self.var_pagamento.set(hoje.strftime("%d/%m/%Y"))
         ambiente = self.var_ambiente.get()
 
-        if ambiente == "1":
+        if ambiente == "1" and not via_robo:
             if not messagebox.askyesno(
                 "Emitir em produção",
                 "A guia será emitida de verdade em PRODUÇÃO e gerará um débito fiscal.\n\n"
@@ -1090,11 +1093,16 @@ class PainelCTe:
         self.btn_emitir.configure(state="disabled")
         self.app._limpar_log()
         self._status("Emitindo guia...")
+        via = "portal do estado" if via_robo else "GNRE"
+        ambiente_txt = (
+            "portal (guia real)"
+            if via_robo
+            else ("produção" if ambiente == "1" else "homologação")
+        )
         self._log(
             f"CT-e: {caminho}\n"
             f"UF favorecida: {uf_efetiva or 'automática'} | "
-            f"Via: GNRE | Ambiente: "
-            f"{'produção' if ambiente == '1' else 'homologação'}"
+            f"Via: {via} | Ambiente: {ambiente_txt}"
         )
         threading.Thread(
             target=self._executar,
@@ -1126,25 +1134,28 @@ class PainelCTe:
                 except Exception:
                     dados = self.dados
             uf_efetiva = (dados.uf_favorecida if dados is not None else None) or uf
-            if (uf_efetiva or "").strip().upper() in ("SP", "ES", "PR"):
-                raise RuntimeError(
-                    f"A UF {uf_efetiva} só pode ser emitida pelo portal do estado "
-                    "e o robô do portal não está disponível neste app. Nada foi "
-                    "enviado à GNRE."
+            if portal_cte.usa_robo(uf_efetiva):
+                resultado = portal_cte.emitir(
+                    caminho,
+                    dados=dados,
+                    log=lambda mensagem: self.fila.put(("log", mensagem)),
+                    visivel=bool(getattr(self.app, "_portal_visivel", False)),
+                    saida_dir=self._pasta_guias(),
                 )
-            resultado = emitir_guia(
-                caminho,
-                config=self.config,
-                ambiente=ambiente,
-                emitir=emitir,
-                gerar_pdf=True,
-                consultar_regras=True,
-                uf_favorecida=uf,
-                data_vencimento=vencimento,
-                data_pagamento=pagamento,
-                log=lambda mensagem: self.fila.put(("log", mensagem)),
-                ao_receber=lambda recibo: self.fila.put(("recibo", recibo)),
-            )
+            else:
+                resultado = emitir_guia(
+                    caminho,
+                    config=self.config,
+                    ambiente=ambiente,
+                    emitir=emitir,
+                    gerar_pdf=True,
+                    consultar_regras=True,
+                    uf_favorecida=uf,
+                    data_vencimento=vencimento,
+                    data_pagamento=pagamento,
+                    log=lambda mensagem: self.fila.put(("log", mensagem)),
+                    ao_receber=lambda recibo: self.fila.put(("recibo", recibo)),
+                )
         except Exception as erro:
             self.fila.put(("erro", f"{type(erro).__name__}: {erro}"))
         else:
@@ -1169,14 +1180,7 @@ class PainelCTe:
             )
             return
         uf = next(iter(ufs))
-        if uf in ("SP", "ES", "PR"):
-            messagebox.showerror(
-                "Portal estadual",
-                f"A UF {uf} é emitida pelo portal do estado, e o robô desse "
-                "portal não está disponível neste app.\n\n"
-                "Use o app de transporte para emitir nesta UF.",
-            )
-            return
+        via_robo = portal_cte.usa_robo(uf)
         venc = vencimento_padrao(uf)
         hoje = date.today()
         self.var_uf.set(uf)
@@ -1186,7 +1190,15 @@ class PainelCTe:
         total_guias = len(caminhos)
         plural = "s" if total_guias > 1 else ""
 
-        if ambiente == "1":
+        if via_robo:
+            if not messagebox.askyesno(
+                "Emitir lote no portal do estado",
+                f"{total_guias} guia{plural} {'serão emitidas' if plural else 'será emitida'} "
+                f"no portal de {uf}, fora da GNRE, e o débito é real mesmo com o "
+                "ambiente em homologação.\n\nConfirma a emissão?",
+            ):
+                return
+        elif ambiente == "1":
             if not messagebox.askyesno(
                 "Emitir lote em produção",
                 f"{total_guias} guia{plural} {'serão emitidas' if plural else 'será emitida'} "
@@ -1201,9 +1213,15 @@ class PainelCTe:
         self.btn_emitir.configure(state="disabled")
         self.app._limpar_log()
         self._status(f"Emitindo {total_guias} guia{plural}...")
+        via = "portal do estado" if via_robo else "GNRE"
+        ambiente_txt = (
+            "portal (guia real)"
+            if via_robo
+            else ("produção" if ambiente == "1" else "homologação")
+        )
         self._log(
-            f"Lote: {total_guias} CT-e{plural} | UF {uf} | Ambiente "
-            f"{'produção' if ambiente == '1' else 'homologação'}\n"
+            f"Lote: {total_guias} CT-e{plural} | UF {uf} | Via: {via} | "
+            f"Ambiente: {ambiente_txt}\n"
             "Ao final da emissão você escolhe onde salvar os PDFs."
         )
         threading.Thread(
@@ -1231,6 +1249,9 @@ class PainelCTe:
         total = len(caminhos)
         resumo: list[dict] = []
         try:
+            if portal_cte.usa_robo(uf):
+                self._lote_portal(caminhos, lidos, resumo)
+                return
             try:
                 certificado = carregar_certificado(
                     self.config.caminho_pfx, self.config.senha
@@ -1288,6 +1309,37 @@ class PainelCTe:
                     resumo.append(item)
         finally:
             self.fila.put(("lote_fim", resumo))
+
+    def _lote_portal(
+        self,
+        caminhos: list[str],
+        lidos: dict[str, DadosCTe],
+        resumo: list[dict],
+    ) -> None:
+        total = len(caminhos)
+        visivel = bool(getattr(self.app, "_portal_visivel", False))
+        for indice, caminho in enumerate(caminhos, 1):
+            item = self._item_do_lote(indice, caminho, lidos)
+            self.fila.put(("log", ""))
+            self.fila.put(
+                ("log", f"=== CT-e {indice}/{total}: {Path(caminho).name} ===")
+            )
+            self.fila.put(("lote_etapa", (indice, total)))
+            try:
+                resultado = portal_cte.emitir(
+                    caminho,
+                    dados=lidos.get(caminho),
+                    log=lambda mensagem: self.fila.put(("log", mensagem)),
+                    visivel=visivel,
+                    saida_dir=self._pasta_guias(),
+                )
+                item["resultado"] = resultado
+                self._classificar_item(item, resultado)
+            except Exception as erro:
+                item["tipo"] = "falha"
+                item["mensagem"] = f"{type(erro).__name__}: {erro}"
+                self.fila.put(("log", f"ERRO: {item['mensagem']}"))
+            resumo.append(item)
 
     def _item_do_lote(
         self, indice: int, caminho: str, lidos: dict[str, DadosCTe]
@@ -1861,6 +1913,8 @@ class PainelCTe:
                 self._log(linha)
 
         guias = self._guias_processadas(resultado)
+        via_portal = resultado.ambiente == "portal"
+        origem_lote = "portal do estado" if via_portal else "portal GNRE"
         if resultado.guia_divergente:
             self._quarentenar_pdf(resultado, "a guia divergiu do CT-e;")
             self._status("CONFERÊNCIA REPROVADA — não pague esta guia.")
@@ -1874,7 +1928,7 @@ class PainelCTe:
             if resultado.retorno_path:
                 detalhe.append(f"Retorno oficial: {resultado.retorno_path}")
             detalhe.append(
-                "\nConfira o lote no portal GNRE antes de qualquer pagamento. "
+                f"\nConfira o lote no {origem_lote} antes de qualquer pagamento. "
                 "Nenhum PDF foi gerado."
             )
             messagebox.showerror("Guia divergente — NÃO PAGUE", "\n".join(detalhe))
@@ -1941,7 +1995,10 @@ class PainelCTe:
                     "Clique de novo em 'Emitir guia' com o mesmo CT-e para "
                     "consultar esse recibo antes de reenviar."
                 )
-            messagebox.showerror("Falha na GNRE", "\n".join(detalhe))
+            titulo = (
+                "Falha no portal estadual" if via_portal else "Falha na GNRE"
+            )
+            messagebox.showerror(titulo, "\n".join(detalhe))
 
         self.em_execucao = False
         self.btn_emitir.configure(state="normal")
@@ -2027,8 +2084,14 @@ class PainelCTe:
             linhas.append("DIVERGENTES — NÃO PAGUE:")
             for item in divergentes:
                 linhas.append(f"- CT-e {item['numero']}: {item['mensagem']}")
+            por_portal = any(
+                (item.get("resultado") is not None)
+                and item["resultado"].ambiente == "portal"
+                for item in divergentes
+            )
+            onde = "portal do estado" if por_portal else "portal GNRE"
             linhas.append(
-                "Confira esses lotes no portal GNRE antes de qualquer pagamento. "
+                f"Confira esses lotes no {onde} antes de qualquer pagamento. "
                 "Nenhum PDF foi gerado para eles."
             )
         detalhe = "\n".join(linhas)
