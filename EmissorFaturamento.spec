@@ -20,6 +20,7 @@ datas += pw_datas
 
 hiddenimports = [
     "pymupdf",
+    "zxingcpp",
     "lxml",
     "lxml.etree",
     "reportlab",

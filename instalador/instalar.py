@@ -13,7 +13,7 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import messagebox, ttk
 
-VERSAO = "3.3.0"
+VERSAO = "3.3.1"
 ATALHO = "Emissor GNRE Faturamento"
 PASTA_PROGRAMA = "GNRE Faturamento"
 PASTA_CONFIG = "ConfGNRE-Faturamento"

@@ -1655,7 +1655,7 @@ class PainelCTe:
             (
                 "log",
                 f"AVISO: o portal não entregou o PDF oficial do CT-e "
-                f"{item['numero']}; a guia local (mesmo layout) foi mantida.",
+                f"{item['numero']}; a guia local foi mantida.",
             )
         )
 

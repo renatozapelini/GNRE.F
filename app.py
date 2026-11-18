@@ -3272,6 +3272,12 @@ class DialogoAjuda(Janela):
             "O navegador do robô fica oculto; se o portal pedir captcha, use "
             "'Portal: mostrar navegador' e repita a emissão.",
         ),
+        (
+            "i",
+            "A guia do portal só é entregue com o código de barras legível e os "
+            "dados fiscais conferidos com o CT-e (valor, CNPJ, número). O layout "
+            "do portal não é critério de aprovação.",
+        ),
         ("h", "Homologação e produção"),
         (
             "i",

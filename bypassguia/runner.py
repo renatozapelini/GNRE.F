@@ -134,7 +134,7 @@ class Runner:
 
     def _entregar(self, entrega: Entrega, resultado) -> Entrega:
         guia = entrega.guia
-        falhas, avisos = conferir_pdf(resultado.pdf, guia)
+        falhas, avisos = conferir_pdf(resultado.pdf, guia, resultado.identificador)
         entrega.avisos = list(dict.fromkeys([*resultado.avisos, *avisos]))
         entrega.identificador = resultado.identificador
         entrega.detalhes = resultado.detalhes
