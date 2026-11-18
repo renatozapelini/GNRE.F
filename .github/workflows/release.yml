@@ -1,0 +1,60 @@
+name: Publicar release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag da versão (ex.: v3.2.8)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  publicar:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Dependencias
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pypdf pyinstaller pywin32
+
+      - name: Programa (EXE unico)
+        run: python -m PyInstaller --noconfirm EmissorFaturamento.spec
+
+      - name: Instalador
+        working-directory: instalador
+        run: python -m PyInstaller --noconfirm instalador.spec
+
+      - name: Publicar release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          name: GNRE Faturamento ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+          body: |
+            Emissor de GNRE do faturamento TOTTAL.
+
+            - Ajuda integrada no menu: o que e necessario e como emitir cada guia.
+            - Atualizacao interna pelo GitHub: o programa avisa e instala novas releases.
+            - Instalador cria Documentos\ConfGNRE-Faturamento, atalhos e configuracao.
+            - Frente de CT-e (TRANSREIS) e NF-e com ICMS-ST/FCP.
+
+            Baixe "Instalar GNRE Faturamento.exe" e execute. A pasta de configuracao
+            existente e preservada nas atualizacoes.
+          files: |
+            dist/Emissor GNRE Faturamento.exe
+            instalador/dist/Instalar GNRE Faturamento.exe
+          fail_on_unmatched_files: true
+          draft: false
+          prerelease: false
