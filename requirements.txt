@@ -1,0 +1,9 @@
+requests>=2.32
+cryptography>=42.0
+lxml>=5.0
+holidays>=0.60
+reportlab>=4.0
+segno>=1.6
+pymupdf>=1.24
+zxing-cpp>=2.2
+ttkbootstrap>=1.20

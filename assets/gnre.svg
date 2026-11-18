@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-label="Emissor GNRE TRANSREIS">
+  <rect width="1024" height="1024" rx="232" ry="232" fill="#262626"/>
+  <g fill="#FFFFFF">
+    <rect x="110" y="250" width="360" height="106"/>
+    <rect x="237" y="356" width="106" height="414"/>
+  </g>
+  <g fill="#F26B1D">
+    <rect x="520" y="250" width="104" height="520"/>
+    <rect x="624" y="250" width="290" height="106"/>
+    <rect x="808" y="356" width="106" height="112"/>
+    <rect x="624" y="468" width="290" height="104"/>
+    <path d="M646 572h104L912 770H768z"/>
+  </g>
+</svg>

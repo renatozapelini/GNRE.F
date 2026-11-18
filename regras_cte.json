@@ -1,0 +1,247 @@
+{
+  "_versao": 1,
+  "MG": {
+    "receita": "100030",
+    "detalhamento": null,
+    "documento_tipo_preferido": "07",
+    "campos_extras": {
+      "53": "CTe {chave}"
+    },
+    "campos_extras_producao": {
+      "45": "CTe {chave}"
+    },
+    "convenio": null,
+    "fallback": {
+      "uf": "MG",
+      "receita": "100030",
+      "descricao": "ICMS Transporte",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": false,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": false,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_campos_adicionais": true,
+      "valor_exigido": "P",
+      "tipos_documento": [
+        "07",
+        "08",
+        "10"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "53",
+          "obrigatorio": false,
+          "titulo": "Informações Complementares",
+          "tamanho": 50
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ],
+      "versoes_xml": [
+        "2.00"
+      ]
+    }
+  },
+  "RS": {
+    "receita": "100030",
+    "detalhamento": null,
+    "documento_tipo_preferido": "07",
+    "campos_extras": {
+      "91": "{chave}"
+    },
+    "campos_extras_producao": {
+      "74": "{chave}"
+    },
+    "convenio": null,
+    "fallback": {
+      "uf": "RS",
+      "receita": "100030",
+      "descricao": "ICMS Transporte",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": false,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": false,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_campos_adicionais": true,
+      "valor_exigido": "P",
+      "tipos_documento": [
+        "01",
+        "07",
+        "08",
+        "10",
+        "20",
+        "21"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "91",
+          "obrigatorio": false,
+          "titulo": "Chave de Acesso da NFe ou do CTe/CTe-OS",
+          "tamanho": 44
+        },
+        {
+          "codigo": "73",
+          "obrigatorio": false,
+          "titulo": "Informações Complementares 1",
+          "tamanho": 100
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ],
+      "versoes_xml": [
+        "2.00"
+      ]
+    }
+  },
+  "RO": {
+    "receita": "100030",
+    "campos_extras_producao": {
+      "89": "{chave}"
+    },
+    "fallback": {
+      "uf": "RO",
+      "receita": "100030",
+      "descricao": "ICMS Transporte",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": false,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": true,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_campos_adicionais": true,
+      "valor_exigido": "P",
+      "tipos_documento": [
+        "07",
+        "08"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "89",
+          "obrigatorio": false,
+          "titulo": "Chave de Acesso do CTe/CTE-OS",
+          "tamanho": 44
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ],
+      "versoes_xml": [
+        "2.00"
+      ]
+    }
+  },
+  "AM": {
+    "receita": "100030",
+    "campos_extras": {
+      "114": "{chave}"
+    },
+    "campos_extras_producao": {
+      "95": "{chave}"
+    }
+  },
+  "AP": {
+    "receita": "100030",
+    "campos_extras": {
+      "137": "{chave}"
+    },
+    "campos_extras_producao": {
+      "103": "{chave}"
+    }
+  },
+  "MA": {
+    "receita": "100030",
+    "campos_extras": {
+      "113": "{chave}"
+    },
+    "campos_extras_producao": {
+      "93": "{chave}"
+    }
+  },
+  "MS": {
+    "receita": "100030",
+    "campos_extras": {
+      "95": "{chave}"
+    },
+    "campos_extras_producao": {
+      "88": "{chave}"
+    }
+  },
+  "PA": {
+    "receita": "100030",
+    "campos_extras": {
+      "90": "{chave}"
+    },
+    "campos_extras_producao": {
+      "100": "{chave}",
+      "66": "CT-e {chave}"
+    }
+  },
+  "PB": {
+    "receita": "100030",
+    "campos_extras": {
+      "120": "{chave}"
+    },
+    "campos_extras_producao": {
+      "99": "{chave}"
+    }
+  },
+  "SE": {
+    "receita": "100030",
+    "campos_extras": {
+      "89": "{chave}"
+    },
+    "campos_extras_producao": {
+      "77": "{chave}"
+    }
+  },
+  "AC": {
+    "receita": "100030",
+    "campos_extras_producao": {
+      "120": "{chave}"
+    }
+  },
+  "MT": {
+    "receita": "100030",
+    "detalhamento": "000100",
+    "documento_tipo_preferido": "23",
+    "campos_extras": {},
+    "campos_extras_producao": {},
+    "convenio": null,
+    "fallback": {
+      "uf": "MT",
+      "receita": "100030",
+      "descricao": "ICMS Transporte",
+      "exige_detalhamento": true,
+      "exige_contribuinte_destinatario": false,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": true,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_campos_adicionais": false,
+      "valor_exigido": "P",
+      "tipos_documento": [
+        "22",
+        "23"
+      ],
+      "campos_adicionais": [],
+      "tipos_gnre": [
+        "0"
+      ],
+      "versoes_xml": [
+        "2.00"
+      ]
+    }
+  }
+}

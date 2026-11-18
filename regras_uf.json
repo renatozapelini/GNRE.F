@@ -1,0 +1,273 @@
+{
+  "_versao": 4,
+  "RJ": {
+    "receita": "100099",
+    "detalhamento": null,
+    "documento_tipo_preferido": "24",
+    "produto": null,
+    "convenio": null,
+    "campos_extras": {
+      "132": "{data_emissao}",
+      "127": "NF-e {numero}/{serie} - {chave}"
+    },
+    "fcp_receita": null,
+    "fcp_no_item": true,
+    "fallback": {
+      "uf": "RJ",
+      "receita": "100099",
+      "descricao": "ICMS Substituição Tributária por Operação",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": false,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": false,
+      "exige_periodo_referencia": false,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_valor_fecp": true,
+      "exige_campos_adicionais": true,
+      "valor_exigido": "PO",
+      "tipos_documento": [
+        "24"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "132",
+          "obrigatorio": true,
+          "titulo": "Data de Emissão",
+          "tamanho": 10
+        },
+        {
+          "codigo": "127",
+          "obrigatorio": false,
+          "titulo": "Informações complementares",
+          "tamanho": 100
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ]
+    }
+  },
+  "MT": {
+    "receita": "100099",
+    "detalhamento": "000022",
+    "documento_tipo_preferido": "22",
+    "produto": null,
+    "convenio": "142/2018",
+    "campos_extras": {
+      "38": "{chave}"
+    },
+    "fcp_receita": null,
+    "fcp_no_item": true,
+    "fcp_detalhamento": "000057",
+    "fcp_convenio": "142/2018",
+    "fallback": {
+      "uf": "MT",
+      "receita": "100099",
+      "descricao": "ICMS Substituição Tributária por Operação",
+      "exige_detalhamento": true,
+      "exige_contribuinte_destinatario": true,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": true,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_valor_fecp": "opcional",
+      "exige_campos_adicionais": true,
+      "valor_exigido": "A",
+      "tipos_documento": [
+        "22",
+        "23",
+        "24"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "38",
+          "obrigatorio": true,
+          "titulo": "Chave de Acesso da NFe",
+          "tamanho": 44
+        },
+        {
+          "codigo": "133",
+          "obrigatorio": false,
+          "titulo": "Chave de Acesso da NFe ou do CTe/CTe-OS",
+          "tamanho": 44
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ]
+    }
+  },
+  "RO": {
+    "receita": "100099",
+    "detalhamento": null,
+    "documento_tipo_preferido": "10",
+    "produto": null,
+    "convenio": "142/2018",
+    "campos_extras": {
+      "52": "{chave}",
+      "83": "{chave}"
+    },
+    "fcp_receita": null,
+    "fcp_no_item": true,
+    "fcp_convenio": "142/2018",
+    "fallback": {
+      "uf": "RO",
+      "receita": "100099",
+      "descricao": "ICMS Substituição Tributária por Operação",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": false,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": true,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_valor_fecp": true,
+      "exige_campos_adicionais": true,
+      "valor_exigido": "P",
+      "tipos_documento": [
+        "10"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "52",
+          "obrigatorio": true,
+          "titulo": "Chave de Acesso da NFe",
+          "tamanho": 44
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ]
+    }
+  },
+  "MG": {
+    "receita": "100099",
+    "detalhamento": null,
+    "documento_tipo_preferido": "10",
+    "produto": null,
+    "convenio": "142/2018",
+    "campos_extras": {
+      "53": "NF-e {numero} {chave}"
+    },
+    "fcp_receita": null,
+    "fcp_no_item": false,
+    "fcp_convenio": "142/2018",
+    "fallback": {
+      "uf": "MG",
+      "receita": "100099",
+      "descricao": "ICMS Substituição Tributária por Operação",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": true,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": true,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_campos_adicionais": true,
+      "valor_exigido": "P",
+      "tipos_documento": [
+        "10"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "53",
+          "obrigatorio": false,
+          "titulo": "Informações Complementares",
+          "tamanho": 50
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ]
+    }
+  },
+  "DF": {
+    "receita": "100099",
+    "detalhamento": null,
+    "documento_tipo_preferido": "10",
+    "produto": "25",
+    "convenio": "142/2018",
+    "campos_extras": {},
+    "fcp_receita": null,
+    "fcp_no_item": false,
+    "fcp_convenio": "142/2018",
+    "fallback": {
+      "uf": "DF",
+      "receita": "100099",
+      "descricao": "ICMS Substituição Tributária por Operação",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": false,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": true,
+      "exige_parcela": false,
+      "exige_produto": true,
+      "exige_campos_adicionais": false,
+      "valor_exigido": "A",
+      "tipos_documento": [
+        "10",
+        "13",
+        "22"
+      ],
+      "campos_adicionais": [],
+      "tipos_gnre": [
+        "0"
+      ]
+    }
+  },
+  "PR": {
+    "receita": "100099",
+    "detalhamento": null,
+    "documento_tipo_preferido": "10",
+    "produto": null,
+    "convenio": "142/2018",
+    "campos_extras": {
+      "61": "NF-e {numero}/{serie}"
+    },
+    "fcp_receita": null,
+    "fcp_no_item": false,
+    "fcp_convenio": "142/2018",
+    "fallback": {
+      "uf": "PR",
+      "receita": "100099",
+      "descricao": "ICMS Substituição Tributária por Operação",
+      "exige_detalhamento": false,
+      "exige_contribuinte_destinatario": true,
+      "exige_data_vencimento": true,
+      "exige_data_pagamento": true,
+      "exige_convenio": true,
+      "exige_periodo_referencia": false,
+      "exige_parcela": false,
+      "exige_produto": false,
+      "exige_campos_adicionais": true,
+      "valor_exigido": "P",
+      "tipos_documento": [
+        "10"
+      ],
+      "campos_adicionais": [
+        {
+          "codigo": "61",
+          "obrigatorio": false,
+          "titulo": "Informações Complementares",
+          "tamanho": 100
+        },
+        {
+          "codigo": "65",
+          "obrigatorio": false,
+          "titulo": "Informações Complementares 2",
+          "tamanho": 100
+        }
+      ],
+      "tipos_gnre": [
+        "0"
+      ]
+    }
+  }
+}
